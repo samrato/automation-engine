@@ -166,3 +166,6 @@ logs/*.log
 !logs/.gitkeep
 data/output/*
 !data/output/.gitkeep
+
+# Instructor Answer Key / Reference Guide
+INSTRUCTOR_ANSWERS.md
