@@ -308,60 +308,122 @@ Arguments passed via the command line are dynamically parsed by the engine and c
 
 ---
 
-### 4. Step-by-Step Invocation Examples
+### 4. Complete CLI Execution Cheat Sheet
 
-Once your team has written the module code, run your tasks using the patterns below:
+Once your team has written the module code, run and test your specific tasks using the exact CLI patterns below:
 
-#### 📂 File Sorting (Team 1)
-Run the directory organizer by passing the path of the folder to tidy up:
+#### 📂 Team 1 — File Systems (`files`)
 ```bash
+# organizer.py (Organize directory files into type subfolders)
 python scripts/run.py run files organize directory_path=data/input
+
+# backup.py (ZIP compress folder contents to target destination)
+python scripts/run.py run files backup source_dir=data/input dest_dir=data/output
+
+# cleanup.py (Clear old temporary log files)
+python scripts/run.py run files cleanup directory_path=data/input days=7
+
+# watcher.py (Monitor file creations in real time)
+python scripts/run.py run files watch directory_path=data/input
 ```
 
-#### 🔌 API Probe (Team 2)
-Probe a remote server status and measure its roundtrip latency:
+#### 🔌 Team 2 — HTTP API Integration (`api`)
 ```bash
+# health.py (Status ping endpoint check)
 python scripts/run.py run api health url=https://api.github.com
+
+# fetch.py (Fetch API data and export to JSON)
+python scripts/run.py run api fetch endpoint=users output_filename=users.json
+
+# upload.py (Post JSON payload to API endpoint)
+python scripts/run.py run api upload file_path=data/output/users.json endpoint=upload
 ```
 
-#### 📊 Load Excel Data (Team 3)
-Extract cells from a local spreadsheet:
+#### 📊 Team 3 — Excel Processing (`excel`)
 ```bash
-python scripts/run.py run excel read file_path=data/samples/sales.xlsx sheet_name=Q1_Report
+# reader.py (Load worksheets into dict lists)
+python scripts/run.py run excel read file_path=data/samples/sales.xlsx sheet_name=Sheet1
+
+# writer.py (Save datasets to excel columns)
+python scripts/run.py run excel write file_path=data/output/output.xlsx data="[{'a': 1}]"
+
+# reports.py (Aggregate pivot summaries)
+python scripts/run.py run excel reports source_file=data/samples/sales.xlsx dest_file=data/output/summary.xlsx
 ```
 
-#### ✉️ Send Email Alert (Team 4)
-Send transactional emails to a recipient:
+#### ✉️ Team 4 — Email Operations (`email`)
 ```bash
-python scripts/run.py run email send to_email=student@example.com subject="Task Notification" body="Automated run finished"
+# sender.py (Send email via SMTP server configuration)
+python scripts/run.py run email send to_email=recipient@example.com subject="Platform Alert" body="Test message"
 ```
 
-#### 🐳 Container Build (Team 5)
-Trigger Docker builds programmatically:
+#### 🐳 Team 5 — Docker Services (`docker`)
 ```bash
-python scripts/run.py run docker build path=dockerfiles/web tag=webapp:latest
+# build.py (Build docker image from Dockerfile context)
+python scripts/run.py run docker build path=. tag=test-image:latest
+
+# run.py (Launch port-bound container instance)
+python scripts/run.py run docker run image_tag=test-image:latest container_name=test-container
+
+# cleanup.py (Prune stopped nodes and unused volumes)
+python scripts/run.py run docker cleanup
 ```
 
-#### 🐙 Git Workflow Operations (Team 6)
-Verify workspace status or commit changed codes automatically:
+#### 🐙 Team 6 — Git Workflows (`git`)
 ```bash
-# Check git working tree status
+# status.py (Get local git workspace status)
 python scripts/run.py run git status repo_path=.
 
-# Commit staged changes
-python scripts/run.py run git commit repo_path=. message="feat: implement task client"
+# commit.py (Stage changes and commit them)
+python scripts/run.py run git commit repo_path=. message="chore: update workflows"
+
+# push.py (Push branches upstream to remote origin)
+python scripts/run.py run git push repo_path=. remote=origin branch=main
 ```
 
-#### ☸️ Fetch Kubernetes Pod List (Team 7)
-Query running cluster pods:
+#### ☸️ Team 7 — Kubernetes Clusters (`kubernetes`)
 ```bash
-python scripts/run.py run kubernetes pods namespace=production
+# deploy.py (Apply YAML deployment/service manifests)
+python scripts/run.py run kubernetes deploy manifest_path=data/samples/pod.yaml namespace=default
+
+# pods.py (List running namespace pods)
+python scripts/run.py run kubernetes pods namespace=default
+
+# logs.py (Collect logs of running pod)
+python scripts/run.py run kubernetes logs pod_name=my-pod namespace=default output_file=logs/pod.log
 ```
 
-#### 🔔 Discord Alert (Team 10)
-Dispatch warning messages directly to Discord Webhooks:
+#### ⏰ Team 8 — Persisted Scheduling (`scheduler`)
 ```bash
-python scripts/run.py run notifications discord message="Alert: Pipeline failed!"
+# jobs.py (Run main loop schedule heartbeat checks)
+python scripts/run.py run scheduler run_jobs interval_seconds=10
+
+# schedule.py (Schedules a task to run daily/weekly)
+python scripts/run.py run scheduler schedule task_name=api:health interval=daily time_of_day=10:00
+```
+
+#### 📈 Team 9 — Report Serialization (`reports`)
+```bash
+# csv.py (Convert JSON records to CSV)
+python scripts/run.py run reports csv input_file=data/output/users.json output_file=data/output/report.csv
+
+# pdf.py (Generate styled ReportLab PDF sheets)
+python scripts/run.py run reports pdf title="System Report" content_lines="['Line A', 'Line B']" output_file=data/output/report.pdf
+
+# excel.py (Save sheets with custom charts)
+python scripts/run.py run reports excel data_source=data/output/users.json output_file=data/output/analytics.xlsx
+```
+
+#### 🔔 Team 10 — Channels Alerting (`notifications`)
+```bash
+# slack.py (Webhook post alerts to Slack)
+python scripts/run.py run notifications slack message="Server overload detected!"
+
+# discord.py (Webhook warning embeds to Discord)
+python scripts/run.py run notifications discord message="Backup failed!"
+
+# email.py (Forward SMTP alert notifications to administrator)
+python scripts/run.py run notifications email subject="Disk Status" message="90% full"
 ```
 
 ---
@@ -380,13 +442,23 @@ Professional codebases maintain strict validation routines. Before pushing code 
 ### Running Lint Checks (Ruff)
 Ruff verifies code formatting and flags patterns:
 ```bash
+# Run styling audit
 ruff check .
+
+# Automatically fix format warnings
+ruff format .
 ```
 
 ### Running Unit Tests (Pytest)
 Pytest executes assertions against helper routines and student modules:
 ```bash
+# Run all project tests:
 pytest
+
+# Run tests for specific modules (Team 12):
+pytest tests/test_files.py     # Check Files category
+pytest tests/test_api.py       # Check API category
+pytest tests/test_engine.py    # Check Engine framework loader
 ```
 
 ---
