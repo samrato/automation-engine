@@ -58,8 +58,15 @@ def list_tasks():
     table.add_column("Task Name", style="green")
     table.add_column("Description", style="white")
 
+    # Sort tasks to ensure alphabetical grouping
+    tasks = sorted(tasks, key=lambda x: (x["category"], x["name"]))
+
+    last_category = None
     for task in tasks:
-        table.add_row(task["category"], task["name"], task["description"])
+        # Collapse repeated category names for cleaner aesthetics
+        display_category = task["category"] if task["category"] != last_category else ""
+        table.add_row(display_category, task["name"], task["description"])
+        last_category = task["category"]
 
     console.print(table)
 
