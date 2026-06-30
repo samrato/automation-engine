@@ -6,6 +6,13 @@ This repository serves as a learning hub. Instead of creating a dozen tiny isola
 
 ---
 
+## 🔗 Quick Navigation Links
+*   [📖 CLI Cheat Sheet & Run Guide](CLI_CHEATSHEET.md) — How to list, run, and test all 28 automations.
+*   [🤝 Student Contributing Guidelines](docs/contributing.md) — Code style, testing, and PR submission guide.
+*   [🛡️ MIT License Details](LICENSE) — Repository license terms.
+
+---
+
 ## 📁 Repository Structure
 
 ```
